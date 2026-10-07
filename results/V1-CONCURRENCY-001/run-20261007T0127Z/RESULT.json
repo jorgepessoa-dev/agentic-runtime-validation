@@ -1,0 +1,17 @@
+{
+  "campaign_id": "V1-CONCURRENCY-001",
+  "status": "HARNESS_INVALID",
+  "target_commit": "62f541b64bb616d0cd406b2584162cc38955d74f",
+  "validation_repo_commit": "afa2add7e25fabffd8d984f98de7a78671418160",
+  "started_utc": "2026-10-07T01:27:05Z",
+  "completed_utc": "2026-10-07T01:27:06Z",
+  "claim_races_started": 0,
+  "failure_stage": "fresh database migration bootstrap",
+  "error_type": "psycopg.errors.UndefinedObject",
+  "error": "role agentic_runtime_runtime does not exist",
+  "classification": "harness setup omitted required disposable PostgreSQL capability-role bootstrap",
+  "provider_calls": 0,
+  "runtime_modified": false,
+  "dump": "database-failure-state.dump",
+  "notes": "No invariant observation was made. This attempt is preserved as invalid and will not be relabeled. The corrected harness uses a new campaign revision."
+}

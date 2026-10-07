@@ -23,6 +23,7 @@ from agentic_runtime.persistence.postgres import apply_migrations, connect  # no
 from oracle.invariants import bounded_active_descendants  # noqa: E402
 
 TARGET = "62f541b64bb616d0cd406b2584162cc38955d74f"
+CAMPAIGN_ID = os.environ.get("V1_CAMPAIGN_ID", "V1-CONCURRENCY-001")
 BASE_SEED = 20261007001
 RACE_COUNTS = 84
 CLAIMERS = (2, 10, 50, 100)
@@ -204,7 +205,7 @@ def main() -> int:
     migration_count = admin.execute("SELECT count(*) AS n FROM runtime.schema_migrations").fetchone()["n"]
     workers = create_workers(admin, max(CLAIMERS))
     out: dict[str, Any] = {
-        "campaign_id": "V1-CONCURRENCY-001", "status": "INCONCLUSIVE",
+        "campaign_id": CAMPAIGN_ID, "status": "INCONCLUSIVE",
         "target_commit": TARGET, "runtime_sha_observed": runtime_head,
         "started_utc": dt.datetime.now(dt.timezone.utc).isoformat(),
         "environment": capture_host(), "postgres_version": admin.execute("SHOW server_version").fetchone()["server_version"],

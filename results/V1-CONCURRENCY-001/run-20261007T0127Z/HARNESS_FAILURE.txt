@@ -1,0 +1,16 @@
+Campaign: V1-CONCURRENCY-001
+Manifest: campaigns/V1-CONCURRENCY-001/CAMPAIGN.yaml
+Started: 2026-10-07T01:27:05Z (runner log /var/tmp/agentic-runtime-v1/postgres-20261007T012705Z.log)
+Target runtime: 62f541b64bb616d0cd406b2584162cc38955d74f
+Validation code commit: afa2add7e25fabffd8d984f98de7a78671418160
+Classification: HARNESS_INVALID; zero claim race waves began.
+
+Observed failure:
+psycopg.errors.UndefinedObject: role "agentic_runtime_runtime" does not exist
+at apply_migrations(admin) before the first campaign fixture or claim.
+
+Cause:
+A fresh initdb cluster does not pre-create the capability roles referenced by migrations. The local disposable-cluster wrapper omitted the target repository's documented role-bootstrap prerequisite. This is a harness setup defect, not runtime evidence.
+
+Preserved PostgreSQL dump: database-failure-state.dump
+The campaign cluster was stopped and its data directory removed by the wrapper trap. Runtime target was not modified. No provider calls occurred.

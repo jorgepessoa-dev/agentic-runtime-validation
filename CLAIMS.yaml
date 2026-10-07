@@ -1,0 +1,92 @@
+# Independent claim inventory. Status is NOT_RUN until direct campaign evidence is linked.
+- id: CLAIM-CONCURRENCY-001
+  claim: "Accepted plan work never exceeds max_concurrent_descendants while claims race."
+  source: {repository: jorgepessoa-dev/agentic-runtime, commit: 62f541b64bb616d0cd406b2584162cc38955d74f, file: architecture/milestones/m10/CHARTER.md, section: Initial M10 demonstration bounds}
+  criticality: CRITICAL
+  validation: {campaign: V1-CONCURRENCY-001, oracle: oracle/invariants.py::bounded_active_descendants}
+  status: NOT_RUN
+  evidence: null
+- id: CLAIM-LOCKING-001
+  claim: "Competing claims for the same plan are serialized by transaction-scoped advisory locking."
+  source: {repository: jorgepessoa-dev/agentic-runtime, commit: 62f541b64bb616d0cd406b2584162cc38955d74f, file: src/agentic_runtime/coordinator/claim.py}
+  criticality: HIGH
+  validation: {campaign: V1-LOCKING-001, oracle: oracle/invariants.py::plan_claim_lock_isolation}
+  status: NOT_RUN
+  evidence: null
+- id: CLAIM-FENCING-001
+  claim: "A stale worker cannot commit an accepted result after lease authority is lost."
+  source: {repository: jorgepessoa-dev/agentic-runtime, commit: 62f541b64bb616d0cd406b2584162cc38955d74f, file: README.md, section: Governance and security}
+  criticality: CRITICAL
+  validation: {campaign: V1-FENCING-001, oracle: oracle/invariants.py::stale_authority_has_no_accepted_effect}
+  status: NOT_RUN
+  evidence: null
+- id: CLAIM-TERMINAL-001
+  claim: "Terminal work cannot be resurrected by retry, duplicate, or restart."
+  source: {repository: jorgepessoa-dev/agentic-runtime, commit: 62f541b64bb616d0cd406b2584162cc38955d74f, file: README.md, section: Governance and security}
+  criticality: CRITICAL
+  validation: {campaign: V1-STATE-001, oracle: oracle/invariants.py::terminal_state_never_resurrects}
+  status: NOT_RUN
+  evidence: null
+- id: CLAIM-IDEMPOTENCY-001
+  claim: "Identical retries do not create duplicate durable effects; key reuse with different semantic input is rejected."
+  source: {repository: jorgepessoa-dev/agentic-runtime, commit: 62f541b64bb616d0cd406b2584162cc38955d74f, file: README.md, section: Governance and security}
+  criticality: HIGH
+  validation: {campaign: V1-IDEMPOTENCY-001, oracle: oracle/invariants.py::idempotent_effects}
+  status: NOT_RUN
+  evidence: null
+- id: CLAIM-BOUNDED-001
+  claim: "Plan node/delegation depth and descendant limits are enforced."
+  source: {repository: jorgepessoa-dev/agentic-runtime, commit: 62f541b64bb616d0cd406b2584162cc38955d74f, file: README.md, section: Coordination and execution}
+  criticality: HIGH
+  validation: {campaign: V1-CONCURRENCY-001, oracle: oracle/invariants.py::bounded_active_descendants}
+  status: NOT_RUN
+  evidence: null
+- id: CLAIM-CANCEL-001
+  claim: "Cancellation is durable, idempotent, and reconciles active execution without accepting late results."
+  source: {repository: jorgepessoa-dev/agentic-runtime, commit: 62f541b64bb616d0cd406b2584162cc38955d74f, file: README.md, section: Governance and security}
+  criticality: HIGH
+  validation: {campaign: V1-CHAOS-001, oracle: oracle/invariants.py::cancelled_work_has_no_accepted_result}
+  status: NOT_RUN
+  evidence: null
+- id: CLAIM-RECOVERY-001
+  claim: "Restart/reconciliation restores stable state without orphan active leases or duplicate accepted work."
+  source: {repository: jorgepessoa-dev/agentic-runtime, commit: 62f541b64bb616d0cd406b2584162cc38955d74f, file: README.md, section: Governance and security}
+  criticality: CRITICAL
+  validation: {campaign: V1-RESTART-001, oracle: oracle/invariants.py::recovered_authority_is_consistent}
+  status: NOT_RUN
+  evidence: null
+- id: CLAIM-DAG-001
+  claim: "Task dependencies prevent execution before required predecessors reach the required state."
+  source: {repository: jorgepessoa-dev/agentic-runtime, commit: 62f541b64bb616d0cd406b2584162cc38955d74f, file: README.md, section: Coordination and execution}
+  criticality: HIGH
+  validation: {campaign: V1-CONCURRENCY-001, oracle: oracle/invariants.py::dependencies_satisfied_before_claim}
+  status: NOT_RUN
+  evidence: null
+- id: CLAIM-HOLDOUT-001
+  claim: "Candidate generation cannot read hidden holdout material before candidate freeze."
+  source: {repository: jorgepessoa-dev/agentic-runtime, commit: 62f541b64bb616d0cd406b2584162cc38955d74f, file: README.md, section: Governed workflow evolution}
+  criticality: HIGH
+  validation: {campaign: V1-GOVERNANCE-001, oracle: oracle/invariants.py::holdout_not_candidate_visible}
+  status: NOT_RUN
+  evidence: null
+- id: CLAIM-AUTHORITY-001
+  claim: "Candidate, evaluator, and promotion authorities are separated by durable database boundaries."
+  source: {repository: jorgepessoa-dev/agentic-runtime, commit: 62f541b64bb616d0cd406b2584162cc38955d74f, file: README.md, section: Governance and security}
+  criticality: CRITICAL
+  validation: {campaign: V1-GOVERNANCE-001, oracle: oracle/invariants.py::authority_separated}
+  status: NOT_RUN
+  evidence: null
+- id: CLAIM-EVIDENCE-001
+  claim: "Evidence and artifacts are immutable or tampering is detected before promotion."
+  source: {repository: jorgepessoa-dev/agentic-runtime, commit: 62f541b64bb616d0cd406b2584162cc38955d74f, file: README.md, section: Governance and security}
+  criticality: CRITICAL
+  validation: {campaign: V1-EVIDENCE-001, oracle: oracle/invariants.py::tampering_cannot_authorize_promotion}
+  status: NOT_RUN
+  evidence: null
+- id: CLAIM-ROLLBACK-001
+  claim: "A failed post-promotion check automatically restores the previous champion."
+  source: {repository: jorgepessoa-dev/agentic-runtime, commit: 62f541b64bb616d0cd406b2584162cc38955d74f, file: README.md, section: Governed workflow evolution}
+  criticality: HIGH
+  validation: {campaign: V1-GOVERNANCE-001, oracle: oracle/invariants.py::rollback_restores_prior_authority}
+  status: NOT_RUN
+  evidence: null

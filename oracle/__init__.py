@@ -1,0 +1,1 @@
+"""Validation-only independent oracle."""

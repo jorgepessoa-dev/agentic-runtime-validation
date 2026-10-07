@@ -1,0 +1,13 @@
+[project]
+name = "agentic-runtime-validation"
+version = "0.1.0"
+description = "Independent adversarial validation harness for Agentic Runtime"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+  "psycopg[binary]>=3.2,<4",
+  "hypothesis>=6.100,<7",
+  "pyyaml>=6,<7",
+]
+
+[tool.uv]
+package = false
